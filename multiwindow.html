@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>youtube複窓</title>
+        <!-- <script src="//code.jquery.com/jquery-1.12.1.min.js"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="menubar" style="float:left;">
+            <button id="btn-01">表示/非表示</button>
+        </div>
+        <div>
+            <button type="button">クリック！</button>
+            <p id="chp">p要素1</p>
+          </div>          
+        <div class="sidemenu" style="float:left;" id="sidemenu">
+            <p>MENU</p>
+            <p>(menuは現在工事中です)</p>
+            <p>add</p>
+            <form name="winsize" action="" method="post">
+                <p>URL:</p>
+                <input type="text" name="url" id="url">
+                <p>height:</p><br>
+                <input type="text" name="height"><br>
+                <!-- <input type="submit" id="submit"> -->
+                <input type="button" value="sousin!" id="submit">
+            </form>
+        </div>
+        <div class="maincontainer" style="overflow-x: scroll;;">
+            <div class="scroll_inner" style="display: inline-block;white-space: nowrap;" id="scroll_inner">
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        //ウィンドウサイズの取得
+        getWindowSize();
+        $(function() {
+            // button要素をクリックしたら発動
+            $('button').click(function() {
+                // 所定の要素のテキストを書き換える
+                $('#chp').text('要素のテキストが書き換わりました。');
+            });
+            //表示/非表示
+            $(function() {
+                $('#btn-01').click(function(){
+                    $('#sidemenu').toggle();
+                });
+            });
+            // button要素をクリックしたら発動
+            $('#submit').click(function() {
+                // 所定の要素のテキストを書き換える
+                $('#chp').text($("#url").val());
+                let width = 416;
+                let height = width * 9 / 16;
+                let url = "EeI24LZODu4"
+
+                let live = ""
+                    + "<div class=\"live\" style=\"display:inline-block;\" >"
+                        + "<iframe width=\"" + width + "\" height=\"" + height + "\" src=\"https://www.youtube.com/embed/" + url + "\"" 
+                            + "frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen>"
+                        + "</iframe>"
+                        + "<br>"
+                        + "<iframe allowfullscreen frameborder=\"0\" height=\"" + (window.innerHeight - height - 10) + "\" width=\"" + width + "\""
+                            + "src=\"https://www.youtube.com/live_chat?v=" + url + "&embed_domain=localhost\">"
+                        + "</iframe>"
+                    + "</div>";
+                $('#scroll_inner').append(live);
+            });
+        });
+        //ウィンドウサイズを取得する
+        function getWindowSize() {
+            document.winsize.height.value = window.innerHeight;
+        };
+        </script>    
+</html>
