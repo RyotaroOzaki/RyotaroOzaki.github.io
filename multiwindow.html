@@ -1,29 +1,31 @@
-<html>
+<html lang="ja">
     <head>
         <title>youtube複窓</title>
-        <!-- <script src="//code.jquery.com/jquery-1.12.1.min.js"></script> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
-        <div class="menubar" style="float:left;">
-            <button id="btn-01">表示/非表示</button>
+        <div class="menubar" style="float:left;" id="menubar">
+            <button id="btn-01">menu</button><br><br>
         </div>
-        <div>
-            <button type="button">クリック！</button>
-            <p id="chp">p要素1</p>
-          </div>          
         <div class="sidemenu" style="float:left;" id="sidemenu">
             <p>MENU</p>
-            <p>(menuは現在工事中です)</p>
-            <p>add</p>
+            <p>メニューは左上のボタンで表示・非表示を切り替えることができます</p>
             <form name="winsize" action="" method="post">
-                <p>URL:</p>
+                <p>配信URL入力:</p>
                 <input type="text" name="url" id="url">
-                <p>height:</p><br>
-                <input type="text" name="height"><br>
-                <!-- <input type="submit" id="submit"> -->
-                <input type="button" value="sousin!" id="submit">
+                <p>追加したい配信のURLを入力してください</p>
+                <p>例1：igAl9EGyQ5Q</p>
+                <p>例2：https://youtu.be/igAl9EGyQ5Q</p>
+                <p>例3：https://www.youtube.com/watch?v=igAl9EGyQ5Q</p>
+                <br>
+                <p>配信画面横幅:</p><br>
+                <input type="number" name="width" id="width" value="480" step="160"><br>
+                <p>お好みで横幅を指定してください</p>
+                <input type="button" value="送信" id="submit">
             </form>
+            <!-- <br>
+            <p>url_list</p>
+            <textarea name="url_list" id="url_list"></textarea> -->
         </div>
         <div class="maincontainer" style="overflow-x: scroll;;">
             <div class="scroll_inner" style="display: inline-block;white-space: nowrap;" id="scroll_inner">
@@ -31,44 +33,51 @@
         </div>
     </body>
     <script type="text/javascript">
-        //ウィンドウサイズの取得
-        getWindowSize();
+        // var url_list = [];
         $(function() {
-            // button要素をクリックしたら発動
-            $('button').click(function() {
-                // 所定の要素のテキストを書き換える
-                $('#chp').text('要素のテキストが書き換わりました。');
-            });
+            $()
             //表示/非表示
             $(function() {
-                $('#btn-01').click(function(){
+                $('#btn-01').on('click',function(){
                     $('#sidemenu').toggle();
                 });
             });
-            // button要素をクリックしたら発動
-            $('#submit').click(function() {
-                // 所定の要素のテキストを書き換える
-                $('#chp').text($("#url").val());
-                let width = 416;
+            //ライブの追加
+            $('#submit').on('click',function() {
+                let width = $("#width").val();
                 let height = width * 9 / 16;
-                let url = "EeI24LZODu4"
-
-                let live = ""
-                    + "<div class=\"live\" style=\"display:inline-block;\" >"
-                        + "<iframe width=\"" + width + "\" height=\"" + height + "\" src=\"https://www.youtube.com/embed/" + url + "\"" 
-                            + "frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen>"
-                        + "</iframe>"
-                        + "<br>"
-                        + "<iframe allowfullscreen frameborder=\"0\" height=\"" + (window.innerHeight - height - 10) + "\" width=\"" + width + "\""
-                            + "src=\"https://www.youtube.com/live_chat?v=" + url + "&embed_domain=tgrpan.github.io\">"
-                        + "</iframe>"
-                    + "</div>";
-                $('#scroll_inner').append(live);
+                let urls = $("#url").val();
+                let url_ary = urls.split(",");
+                console.log(url_ary);
+                for(let url of url_ary){
+                    url = url.replace("https://youtu.be/", "");
+                    url = url.replace("https://www.youtube.com/watch?v=", "");
+                    console.log(url);
+                    let live = ""
+                        + "<div class=\"live\" style=\"display:inline-block;\" id=\"v_" + url +  "\">"
+                            + "<iframe width=\"" + width + "\" height=\"" + height + "\" src=\"https://www.youtube.com/embed/" + url + "\"" 
+                                + "frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen>"
+                            + "</iframe>"
+                            + "<br>"
+                            + "<iframe allowfullscreen frameborder=\"0\" height=\"" + (window.innerHeight - height)*0.95 + "\" width=\"" + width + "\""
+                                + "src=\"https://www.youtube.com/live_chat?v=" + url + "&embed_domain=tgrpan.github.io\">"
+                            + "</iframe>"
+                        + "</div>";
+                    $('#scroll_inner').append(live);
+                    let remove_button = "<input type=button value=\"削除\" class=\"rmbutton\" id=\"" + url + "\"><br>";
+                    $('#menubar').append(remove_button);
+                    // url_list.push(url);
+                }
+            });
+            //削除
+            $(document).on('click', ".rmbutton", function(){
+                let url = $(this).attr("id")
+                let id = "#" + url;
+                $(id).remove();
+                id = "#v_" + url;
+                console.log(id);
+                $(id).remove();
             });
         });
-        //ウィンドウサイズを取得する
-        function getWindowSize() {
-            document.winsize.height.value = window.innerHeight;
-        };
-        </script>    
+    </script>    
 </html>
