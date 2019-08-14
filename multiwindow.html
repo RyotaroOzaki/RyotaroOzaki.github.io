@@ -49,6 +49,8 @@
                 let urls = $("#url").val();
                 let url_ary = urls.split(",");
                 console.log(url_ary);
+                let hostname = location.href;
+                console.log(hostname);
                 for(let url of url_ary){
                     url = url.replace("https://youtu.be/", "");
                     url = url.replace("https://www.youtube.com/watch?v=", "");
@@ -60,7 +62,7 @@
                             + "</iframe>"
                             + "<br>"
                             + "<iframe allowfullscreen frameborder=\"0\" height=\"" + (window.innerHeight - height)*0.95 + "\" width=\"" + width + "\""
-                                + "src=\"https://www.youtube.com/live_chat?v=" + url + "&embed_domain=tgrpan.github.io\">"
+                                + "src=\"https://www.youtube.com/live_chat?v=" + url + "&embed_domain=\"" + hostname + "\">"
                             + "</iframe>"
                         + "</div>";
                     $('#scroll_inner').append(live);
