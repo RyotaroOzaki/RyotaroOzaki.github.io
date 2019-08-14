@@ -49,7 +49,7 @@
                 let urls = $("#url").val();
                 let url_ary = urls.split(",");
                 console.log(url_ary);
-                let hostname = location.href;
+                let hostname = location.host;
                 console.log(hostname);
                 for(let url of url_ary){
                     url = url.replace("https://youtu.be/", "");
